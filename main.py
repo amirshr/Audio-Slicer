@@ -24,7 +24,8 @@ async def slice_audio(input_path, chunk_size, output_format):
         print(f"Error processing audio: {e}")
         pass
 
-    segment_duration = 15 * 60
+    # segment_duration = 15 * 60
+    segment_duration = chunk_size
     offset = 0
     segment_index = 0
     segment_paths = []
@@ -36,10 +37,10 @@ async def slice_audio(input_path, chunk_size, output_format):
 
         segment = audio[round(offset * 1000):round(segment_end * 1000)]
 
-        segment_file = f"segment_{segment_index}.mp3"
+        segment_file = f"segment_{segment_index}.{output_format}"
         segment_path = os.path.join(dir_path, segment_file)
 
-        segment.export(segment_path, format="mp3")
+        segment.export(segment_path, format=output_format)
         segment_paths.append(segment_path)
         segment_index += 1
         offset = segment_end
@@ -48,7 +49,7 @@ async def slice_audio(input_path, chunk_size, output_format):
 async def main():
     parser = argparse.ArgumentParser(description='Audio Slicer')
     parser.add_argument('-p', '--path', help='Path to audio file', required=True)
-    parser.add_argument('-c', '--chunk-size', type=int, help='Chunk size in milliseconds', required=True)
+    parser.add_argument('-c', '--chunk-size', type=int, help='Chunk size in seconds', required=True)
     parser.add_argument('-f', '--format', help='Output format', required=True)
 
     args = parser.parse_args()
