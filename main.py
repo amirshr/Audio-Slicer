@@ -16,7 +16,7 @@ async def slice_audio(input_path, chunk_size, output_format):
     directory, base_filename = os.path.split(input_path)
     filename, extension = os.path.splitext(base_filename)
     final_audio = os.path.join(directory, f"segment.{output_format}")
-    if extension != '.'+output_format:
+    if extension != '.' + output_format:
         try:
             await asyncio.wait_for(ffmpeg_convert(input_path, final_audio), timeout=10)
         except Exception as e:
@@ -45,7 +45,6 @@ async def slice_audio(input_path, chunk_size, output_format):
 
 
 async def main():
-
     parser = argparse.ArgumentParser(description='Audio Slicer')
     parser.add_argument('-p', '--path', help='Path to audio file', required=True)
     parser.add_argument('-c', '--chunk-size', type=int, help='Chunk size in seconds', required=True)
@@ -57,4 +56,3 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
-    # asyncio.run(slice_audio('segment.flac',500,'flac'))
